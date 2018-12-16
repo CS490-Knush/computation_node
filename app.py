@@ -48,7 +48,7 @@ def run_job():
     file_time = time.time() - start_time
     print(r.content)
     file_size = len(r.content)
-    with open(data_file, 'wb') as f:
+    with open("fetched/%s" % data_file, 'wb') as f:
         f.write(r.content)
     # r = subprocess.Popen(["scp", "root@%s:/%s" % (storage_node, data_file), "."])
     p = Process(target=run_spark_job, args=(spark_program, data_file))

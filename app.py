@@ -21,6 +21,8 @@ def tc():
     global storage_node
     bandwidth = tc_data['bandwidth']
     # do the tc -> kshia
+    p = subprocess.call("pwd")
+    p = subprocess.call("ls")
     p = subprocess.call("./tc_bw_limit.sh %s" % str(bandwidth))
     # set storage_node
     storage_node = tc_data['storage_ip']

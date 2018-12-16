@@ -34,7 +34,7 @@ def tc():
     storage_node = tc_data['storage_ip']
     csv_file_name = '{id}_{date:%Y-%m-%d_%H-%M-%S}.txt'.format(id=socket.gethostname(), date=datetime.datetime.now())
     with open(csv_file_name, 'a') as f:
-        f.write("Current Time,File Size,Bandwidth,Computation Node,Storage Node,File Time,Job Time,Total Time")
+        f.write("Current Time,File Size,Bandwidth,Computation Node,Storage Node,File Time,Job Time,Total Time\n")
     return Response("Successfully configured tc", status=200)
 
 @app.route("/run_job", methods=["POST"])
@@ -68,7 +68,7 @@ def run_job():
 
 def write_to_csv(file_size, bandwidth, computation_node, storage_node, file_time, job_time, total_time):
     with open(csv_file_name, 'a') as f:
-        f.write("%s,%s,%s,%s,%s,%s,%s,%s" % (str(time.time()), str(file_size), str(bandwidth), str(computation_node), storage_node, str(file_time), str(job_time), str(total_time)))
+        f.write("%s,%s,%s,%s,%s,%s,%s,%s\n" % (str(time.time()), str(file_size), str(bandwidth), str(computation_node), storage_node, str(file_time), str(job_time), str(total_time)))
 
 @app.route("/get_data_file/<filename>", methods=["GET"])
 def get_data_file(filename):

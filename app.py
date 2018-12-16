@@ -23,7 +23,7 @@ def tc():
     # do the tc -> kshia
     p = subprocess.call("pwd")
     p = subprocess.call("ls")
-    p = subprocess.call("./tc_bw_limit.sh %s" % str(bandwidth))
+    p = subprocess.call("./tc_bw_limit.sh %s" % str(bandwidth), shell=True)
     # set storage_node
     storage_node = tc_data['storage_ip']
     return Response("Successfully configured tc", status=200)

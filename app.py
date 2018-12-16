@@ -32,7 +32,9 @@ def tc():
     p = subprocess.call("./tc_bw_limit.sh %s" % str(bandwidth), shell=True)
     # set storage_node
     storage_node = tc_data['storage_ip']
-    csv_file_name = '{id}_{date:%Y-%m-%d_%H-%M-%S}.dat'.format(id=socket.gethostname(), date=datetime.datetime.now())
+    csv_file_name = '{id}_{date:%Y-%m-%d_%H-%M-%S}.txt'.format(id=socket.gethostname(), date=datetime.datetime.now())
+    with open(csv_file_name, 'a') as f:
+        f.write("Current Time,File Size,Bandwidth,Computation Node,Storage Node,File Time,Job Time,Total Time")
     return Response("Successfully configured tc", status=200)
 
 @app.route("/run_job", methods=["POST"])
@@ -51,16 +53,16 @@ def run_job():
     with open("fetched/%s" % data_file, 'wb') as f:
         f.write(r.content)
     # r = subprocess.Popen(["scp", "root@%s:/%s" % (storage_node, data_file), "."])
-    p = Process(target=run_spark_job, args=(spark_program, data_file))
+    p = Process(target=run_spark_job, args=(spark_program, "fetched/%s" % data_file))
     p.start()
     p.join()
 
     end_time = time.time()
     total_time = end_time - start_time
-    job_time = end_time - file_time
+    job_time = total_time - file_time
 
     print("Finished running spark job %s with file %s" % (spark_program, data_file))
-    print("Time: %d" % end_time-start_time)
+    print("Time: %f" % (end_time-start_time))
     write_to_csv(file_size=file_size, bandwidth=bandwidth, computation_node=socket.gethostname(), storage_node=storage_node, file_time=file_time, job_time=job_time, total_time=total_time)
     return Response("Success!", status=200)
 

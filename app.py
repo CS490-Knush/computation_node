@@ -21,7 +21,7 @@ def tc():
     global storage_node
     bandwidth = tc_data['bandwidth']
     # do the tc -> kshia
-    p = subprocess.Popen(["./tc_bw_limit.sh", bandwidth])
+    p = subprocess.Popen(["./tc_bw_limit.sh", str(bandwidth)])
     sts = p.wait()
     if sts is not 0:
         return Response("TC did not work", status=400)
